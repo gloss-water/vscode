@@ -24,7 +24,7 @@ import { getOrCreateMinimapCharRenderer } from 'vs/editor/common/view/runtimeMin
 import { ViewContext } from 'vs/editor/common/view/viewContext';
 import * as viewEvents from 'vs/editor/common/view/viewEvents';
 import { ViewLineData } from 'vs/editor/common/viewModel/viewModel';
-import { scrollbarShadow, scrollbarSliderActiveBackground, scrollbarSliderBackground, scrollbarSliderHoverBackground } from 'vs/platform/theme/common/colorRegistry';
+import { minimapOpacity, scrollbarShadow, scrollbarSliderActiveBackground, scrollbarSliderBackground, scrollbarSliderHoverBackground } from 'vs/platform/theme/common/colorRegistry';
 import { registerThemingParticipant } from 'vs/platform/theme/common/themeService';
 
 function getMinimapLineHeight(renderMinimap: RenderMinimap): number {
@@ -917,6 +917,10 @@ export class Minimap extends ViewPart {
 }
 
 registerThemingParticipant((theme, collector) => {
+	const minimapOpacityValue = theme.getColor(minimapOpacity);
+	if (minimapOpacityValue) {
+		collector.addRule(`.monaco-editor .minimap { opacity: ${minimapOpacityValue.rgba.a}; will-change: opacity; }`);
+	}
 	const sliderBackground = theme.getColor(scrollbarSliderBackground);
 	if (sliderBackground) {
 		const halfSliderBackground = sliderBackground.transparent(0.5);
